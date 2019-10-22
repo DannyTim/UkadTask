@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using UkadTask.Models;
 
 namespace UkadTask.Controllers
 {
@@ -25,6 +27,14 @@ namespace UkadTask.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        public void Test()
+        {
+            DBtest db = new DBtest();
+            db.Connect();
+            db.AddTable();
+            //var a = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
         }
     }
 }

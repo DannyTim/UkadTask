@@ -16,11 +16,16 @@ namespace UkadTask.Controllers
     public class DiagnosticsController : Controller
     {
         [HttpGet]
-        public ActionResult Get(string url)
+        public ActionResult Get(string sourceUrl)
         {
-            SiteMapReader smr = new SiteMapReader(url);
-            var result = smr.MeasureResponseTime();
-            return Json(result, JsonRequestBehavior.AllowGet);
+            if (string.IsNullOrWhiteSpace(sourceUrl))
+            {
+                return View("~/Views/View.cshtml");
+            }
+
+            SiteMapReader smr = new SiteMapReader(sourceUrl);
+            List<URLInfo> result = smr.MeasureResponseTime();
+            return View("~/Views/View.cshtml", new URLInfoViewModel{URLInfo = result, SourceUrl = sourceUrl});
         }
     }
 }

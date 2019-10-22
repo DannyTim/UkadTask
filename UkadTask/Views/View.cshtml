@@ -1,0 +1,27 @@
+﻿@model UkadTask.Models.URLInfoViewModel
+
+@{
+    //Layout = null;
+    ViewBag.Title = "View";
+}
+
+@using (Html.BeginForm("Get", "Diagnostics", FormMethod.Get))
+{
+    <br>
+    @Html.TextBoxFor(x => x.SourceUrl)
+    <input type="submit" value="Submit">
+}
+
+@if (Model?.URLInfo != null)
+{
+    <h2>URLs</h2>
+    <table>
+        @foreach (var a in Model.URLInfo)
+        {
+            <tr>
+                <td>@a.Url</td>
+            </tr>
+        }
+    </table>
+}
+
