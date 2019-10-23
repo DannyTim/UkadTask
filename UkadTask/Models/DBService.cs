@@ -64,7 +64,7 @@ namespace UkadTask.Models
 
             var query = $@"INSERT INTO {name} VALUES ('hello', '0')"; //{URLInfos[0].Url} {URLInfos[0].ElapsedTime}
             SqlCeCommand cmd = new SqlCeCommand(query, _connection);
-            cmd.ExecuteNonQuery();
+            cmd.ExecuteNonQuery(); 
         }
 
         public void RemoveURLInfos()
