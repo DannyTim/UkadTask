@@ -25,7 +25,13 @@ namespace UkadTask.Controllers
 
             SiteMapReader smr = new SiteMapReader(sourceUrl);
             List<URLInfo> result = smr.MeasureResponseTime();
-            return View("~/Views/View.cshtml", new URLInfoViewModel{URLInfo = result, SourceUrl = sourceUrl});
+            DBService dbs = new DBService();
+            //dbs.AddTable(sourceUrl);
+            dbs.AddURLInfos(result, sourceUrl);
+            dbs.GetURLInfos(sourceUrl);
+            
+
+            return View("~/Views/View.cshtml", new URLInfoViewModel{URLInfo = dbs.GetURLInfos(sourceUrl), SourceUrl = sourceUrl});
         }
     }
 }

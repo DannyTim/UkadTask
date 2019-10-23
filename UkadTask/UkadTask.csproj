@@ -143,6 +143,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DBService.cs" />
     <Compile Include="Models\DBtest.cs" />
     <Compile Include="Models\SiteMapReader.cs" />
     <Compile Include="Models\URLInfo.cs" />

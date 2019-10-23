@@ -29,12 +29,12 @@ namespace UkadTask.Controllers
             return View();
         }
 
-        public void Test()
-        {
-            DBtest db = new DBtest();
-            db.Connect();
-            db.AddTable();
-            //var a = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
-        }
+        //public void Test()
+        //{
+        //    DBtest db = new DBtest();
+        //    db.Connect();
+        //    db.AddTable();
+        //    //var a = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
+        //}
     }
 }

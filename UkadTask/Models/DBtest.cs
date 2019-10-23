@@ -9,7 +9,7 @@ namespace UkadTask.Models
     public class DBtest
     {
         SqlCeConnection con = new SqlCeConnection(ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString);
-        string query = @"CREATE TABLE TEST(Field nvarchar Null);";
+        string query = @"DROP TABLE TEST;";
 
         public void Connect()
         {
