@@ -26,7 +26,10 @@ namespace UkadTask.Models
 
             _stopwatch = new Stopwatch();
 
-            GetUrlsFromSiteMap();
+            Task.Factory.StartNew(() =>
+            {
+                GetUrlsFromSiteMap();
+            }).GetAwaiter().GetResult();
             _urlList = _urlList.Distinct().ToList();
         }
 
@@ -80,7 +83,10 @@ namespace UkadTask.Models
                         foreach (var sitemap in sitemaps)
                         {
                             string current = sitemap;
-                            var task = Task.Run(() => { GetUrlsFromSiteMap(current); });
+                            var task =  Task.Run(() =>
+                            {
+                                GetUrlsFromSiteMap(current);
+                            });
                             tasks.Add(task);
                         }
 

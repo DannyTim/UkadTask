@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlServerCe;
 
@@ -6,75 +7,99 @@ namespace UkadTask.Models
 {
     public class DBService
     {
-        private SqlCeConnection _connection = new SqlCeConnection(ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString);
-
-        public DBService()
+        private SqlCeConnection _connection
         {
-            _connection.Open();
-        }
-
-        public string ParceName(string name)
-        {
-            name = name.Replace("www.", string.Empty);
-            name = name.Replace(".com", string.Empty);
-            name = name.Replace(".ua", string.Empty);
-            name = name.Replace(".", string.Empty);
-
-            return name;
-        }
-
-        public void AddTable(string name)
-        {
-            name = ParceName(name);
-
-            string query = $@"CREATE TABLE {name}(URL nvarchar NOT NULL, ElapsedTime smallint NOT NULL);";
-
-            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
-            cmd.ExecuteNonQuery();
-        }
-
-        public List<URLInfo> GetURLInfos(string name)
-        {
-            List<URLInfo> urlInfos = new List<URLInfo>();
-
-            name = ParceName(name);
-
-            var query = $@"SELECT * FROM {name}";
-            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
-            SqlCeDataReader reader = cmd.ExecuteReader();
-
-            string url;
-            int elapsedTime;
-            if (reader.HasRows)
+            get
             {
-                while (reader.Read())
+                var connection = new SqlCeConnection(ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString);
+                connection.Open();
+                return connection;
+            }
+        }
+
+        public void CreateTableForURLs(string tableName)
+        {
+            string query = $@"CREATE TABLE {tableName} (URL varchar(max) NOT NULL, ElapsedTime nvarchar(max) NOT NULL);";
+            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
+            using (_connection)
+            {
+                try
                 {
-                    url = reader.GetString(0);
-                    elapsedTime = reader.GetInt32(1);
-                    urlInfos.Add(new URLInfo(){Url = url, ElapsedTime = elapsedTime});
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //TODO: Add action
                 }
             }
-
-            return new List<URLInfo>();
         }
 
-        public void AddURLInfos(List<URLInfo> URLInfos, string name)
+        public void DropTable(string tableName)
         {
-            name = ParceName(name);
-
-            var query = $@"INSERT INTO {name} VALUES ('hello', '0')"; //{URLInfos[0].Url} {URLInfos[0].ElapsedTime}
+            string query = $@"DROP TABLE {tableName}";
             SqlCeCommand cmd = new SqlCeCommand(query, _connection);
-            cmd.ExecuteNonQuery(); 
+            using (_connection)
+            {
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //TODO: Add action
+                }
+            }
         }
 
-        public void RemoveURLInfos()
+        public void AddURLInfos(List<URLInfo> URLInfos, string tableName)
         {
-
+            string query;
+            SqlCeCommand cmd = null;
+            using (_connection)
+            {
+                foreach (var urlInfo in URLInfos)
+                {
+                    query = $@"INSERT INTO {tableName} VALUES ('{urlInfo.Url}', '{urlInfo.ElapsedTime}')";
+                    cmd = new SqlCeCommand(query, _connection);
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
 
-        ~DBService()
+        public void RemoveAllURLInfos(string tableName)
         {
-            _connection.Close();
+            string query = $@"DELETE FROM {tableName}";
+            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
+            using (_connection)
+            {
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception e)
+                {
+                    //TODO: Add action
+                }
+            }
+        }
+
+        public List<URLInfo> GetAllURLInfos(string name)
+        {
+            List<URLInfo> urlInfos = new List<URLInfo>();
+            var query = $@"SELECT * FROM {name}";
+            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
+            using (_connection)
+            {
+                SqlCeDataReader reader = cmd.ExecuteReader();
+                while (reader.Read())
+                {
+                    for (int i = 0; i < reader.FieldCount - 1; i++)
+                    {
+                        urlInfos.Add(new URLInfo() { Url = reader.GetString(0), ElapsedTime = Convert.ToInt32(reader.GetString(1)) });
+                    }
+                }
+            }
+            return urlInfos;
         }
     }
 }
