@@ -17,9 +17,10 @@ namespace UkadTask.Models
             }
         }
 
+        //TODO: change nvarchar
         public void CreateTableForURLs(string tableName)
         {
-            string query = $@"CREATE TABLE {tableName} (URL varchar(max) NOT NULL, ElapsedTime nvarchar(max) NOT NULL);";
+            string query = $@"CREATE TABLE {tableName} (URL nvarchar(1000) NOT NULL, ElapsedTime nvarchar(1000) NOT NULL);";
             SqlCeCommand cmd = new SqlCeCommand(query, _connection);
             using (_connection)
             {
@@ -61,7 +62,14 @@ namespace UkadTask.Models
                 {
                     query = $@"INSERT INTO {tableName} VALUES ('{urlInfo.Url}', '{urlInfo.ElapsedTime}')";
                     cmd = new SqlCeCommand(query, _connection);
-                    cmd.ExecuteNonQuery();
+                    try
+                    {
+                        cmd.ExecuteNonQuery();
+                    }
+                    catch (Exception e)
+                    {
+                        //TODO: Add action
+                    }
                 }
             }
         }
@@ -83,20 +91,54 @@ namespace UkadTask.Models
             }
         }
 
-        public List<URLInfo> GetAllURLInfos(string name)
+        public List<URLInfo> GetAllURLInfos(string tableName)
         {
             List<URLInfo> urlInfos = new List<URLInfo>();
-            var query = $@"SELECT * FROM {name}";
+            var query = $@"SELECT * FROM {tableName}";
             SqlCeCommand cmd = new SqlCeCommand(query, _connection);
             using (_connection)
             {
-                SqlCeDataReader reader = cmd.ExecuteReader();
-                while (reader.Read())
+                try
                 {
-                    for (int i = 0; i < reader.FieldCount - 1; i++)
+                    SqlCeDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
                     {
-                        urlInfos.Add(new URLInfo() { Url = reader.GetString(0), ElapsedTime = Convert.ToInt32(reader.GetString(1)) });
+                        for (int i = 0; i < reader.FieldCount - 1; i++)
+                        {
+                            urlInfos.Add(new URLInfo() { Url = reader.GetString(0), ElapsedTime = Convert.ToInt32(reader.GetString(1)) });
+                        }
                     }
+                }
+                catch (Exception e)
+                {
+                    //TODO: Add action
+                }
+            }
+            return urlInfos;
+        }
+
+        public List<URLInfo> GetByNameURLInfos(string tableName, string searchWord)
+        {
+            List<URLInfo> urlInfos = new List<URLInfo>();
+            var query = $@"SELECT * FROM {tableName} WHERE URL LIKE '%{searchWord}%'";
+            //var query =$@"SELECT * FROM {tableName} WHERE Contains(URL, '{searchWord}')";
+            SqlCeCommand cmd = new SqlCeCommand(query, _connection);
+            using (_connection)
+            {
+                try
+                {
+                    SqlCeDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        for (int i = 0; i < reader.FieldCount - 1; i++)
+                        {
+                            urlInfos.Add(new URLInfo() { Url = reader.GetString(0), ElapsedTime = Convert.ToInt32(reader.GetString(1)) });
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    //TODO: Add action
                 }
             }
             return urlInfos;
