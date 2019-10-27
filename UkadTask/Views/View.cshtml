@@ -1,33 +1,8 @@
 ﻿@model UkadTask.Models.URLInfoViewModel
 
-@{
-    //Layout = null;
-    ViewBag.Title = "View";
-}
-
-@using (Html.BeginForm("Get", "Diagnostics", FormMethod.Get))
-{
-    <br>
-    @Html.TextBoxFor(x => x.SourceUrl)
-    <input type="submit" value="Submit">
-}
-
-@if (Model?.URLInfo != null)
-{
-    <h2>URLs</h2>
-    <table>
-        @foreach (var a in Model.URLInfo)
-        {
-            <tr>
-                <td>@a.Url</td><td>@a.ElapsedTime</td>
-            </tr>
-        }
-    </table>
-}
-
-@*<!DOCTYPE HTML>
+<!DOCTYPE HTML>
 <html>
-<head>  
+<head>
     <script>
         window.onload = function () {
 
@@ -35,26 +10,18 @@
                 animationEnabled: true,
                 theme: "light2",
                 title:{
-                    text: "Simple Line Chart"
+                    text: "Test of Speed"
                 },
                 axisY:{
                     includeZero: false
                 },
-                data: [{        
-                    type: "line",       
+                data: [{
+                    type: "line",
                     dataPoints: [
-                        { y: 100, indexLabel: "lowest", markerColor: "DarkSlateGrey", markerType: "cross" },
-                        { y: 414},
-                        { y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
-                        { y: 460 },
-                        { y: 450 },
-                        { y: 500 },
-                        { y: 480 },
-                        { y: 480 },
-                        { y: 410 },
-                        { y: 500 },
-                        { y: 480 },
-                        { y: 510 }
+                        @foreach (var a in Model.URLInfo)
+                        {
+                            @("{ y:" + a.ElapsedTime + " },");
+                        }
                     ]
                 }]
             });
@@ -64,7 +31,36 @@
     </script>
 </head>
 <body>
-<div id="chartContainer" style="height: 370px; width: 100%;"></div>
-<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    @{
+        //Layout = null;
+        ViewBag.Title = "Speed Test";
+    }
+
+    @using (Html.BeginForm("Get", "Diagnostics", FormMethod.Get))
+    {
+        <br>
+        @Html.TextBoxFor(x => x.SourceUrl)
+        <input type="submit" value="Submit">
+    }
+
+    <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    @if (Model?.URLInfo != null)
+    {
+        <h2>URLs</h2>
+        <table>
+            @foreach (var a in Model.URLInfo)
+            {
+                <tr>
+                    <td>@a.Url</td>
+                    <td>@a.ElapsedTime</td>
+                </tr>
+            }
+        </table>
+    }
 </body>
-</html>*@
+</html>
+
+
+

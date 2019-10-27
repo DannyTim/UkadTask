@@ -20,7 +20,8 @@ namespace UkadTask.Controllers
         {
             if (string.IsNullOrWhiteSpace(sourceUrl))
             {
-                return View("~/Views/View.cshtml");
+                DBService dbs = new DBService();
+                return View("~/Views/View.cshtml", new URLInfoViewModel { URLInfo = dbs.GetAllURLInfos("abcdef"), SourceUrl = sourceUrl });
             }
 
             //SiteMapReader smr = new SiteMapReader(sourceUrl);
@@ -29,21 +30,6 @@ namespace UkadTask.Controllers
             List<URLInfo> exampleList = new List<URLInfo>();
 
             //exampleList.Add(new URLInfo() { Url = "aaa", ElapsedTime = 111 });
-            //exampleList.Add(new URLInfo() { Url = "bbb", ElapsedTime = 222 });
-            //exampleList.Add(new URLInfo() { Url = "ccc", ElapsedTime = 333 });
-            //exampleList.Add(new URLInfo() { Url = "ddd", ElapsedTime = 444 });
-            //exampleList.Add(new URLInfo() { Url = "eee", ElapsedTime = 555 });
-            //exampleList.Add(new URLInfo() { Url = "ece", ElapsedTime = 666 });
-            //exampleList.Add(new URLInfo() { Url = "cec", ElapsedTime = 777 });
-            //exampleList.Add(new URLInfo() { Url = "eec", ElapsedTime = 888 });
-            //exampleList.Add(new URLInfo() { Url = "eecaa", ElapsedTime = 999 });
-            //exampleList.Add(new URLInfo() { Url = "eecaaecaa", ElapsedTime = 100 });
-            //exampleList.Add(new URLInfo() { Url = "bbbbbbbbbbbb", ElapsedTime = 101 });
-            //exampleList.Add(new URLInfo() { Url = "bbbbbbbbbbbb", ElapsedTime = 101 });
-            //exampleList.Add(new URLInfo() { Url = "bbbbbbbbbbbb", ElapsedTime = 101 });
-
-
-            DBService dbs = new DBService();
 
             //dbs.CreateTableForURLs(sourceUrl);
             //dbs.AddURLInfos(exampleList, sourceUrl);
@@ -51,7 +37,7 @@ namespace UkadTask.Controllers
             //dbs.GetByNameURLInfos(sourceUrl, "c");
             
 
-            return View("~/Views/View.cshtml", new URLInfoViewModel{URLInfo = dbs.GetByNameURLInfos(sourceUrl, "a"), SourceUrl = sourceUrl});
+            return View("~/Views/View.cshtml"/*, new URLInfoViewModel{URLInfo = dbs.GetAllURLInfos("example"), SourceUrl = sourceUrl}*/);
         }
     }
 }
