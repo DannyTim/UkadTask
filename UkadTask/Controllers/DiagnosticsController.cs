@@ -18,9 +18,10 @@ namespace UkadTask.Controllers
         [HttpGet]
         public ActionResult Get(string sourceUrl)
         {
+            DBService dbs = new DBService();
             if (string.IsNullOrWhiteSpace(sourceUrl))
             {
-                DBService dbs = new DBService();
+                //DBService dbs = new DBService();
                 return View("~/Views/View.cshtml", new URLInfoViewModel { URLInfo = dbs.GetAllURLInfos("abcdef"), SourceUrl = sourceUrl });
             }
 
@@ -35,9 +36,11 @@ namespace UkadTask.Controllers
             //dbs.AddURLInfos(exampleList, sourceUrl);
             //dbs.GetURLInfos(sourceUrl);
             //dbs.GetByNameURLInfos(sourceUrl, "c");
-            
 
-            return View("~/Views/View.cshtml"/*, new URLInfoViewModel{URLInfo = dbs.GetAllURLInfos("example"), SourceUrl = sourceUrl}*/);
+            //return View("~/Views/Shared/Error.cshtml");
+            return View("~/Views/View.cshtml", new URLInfoViewModel{URLInfo = dbs.GetAllURLInfos(sourceUrl), SourceUrl = sourceUrl});
         }
     }
 }
+//{ y: 100, indexLabel: "lowest", markerColor: "DarkSlateGrey", markerType: "cross" },
+//{ y: 520, indexLabel: "highest",markerColor: "red", markerType: "triangle" },
