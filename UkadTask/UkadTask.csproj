@@ -144,7 +144,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\DBService.cs" />
-    <Compile Include="Models\DBtest.cs" />
+    <Compile Include="Models\HistoryViewModel.cs" />
+    <Compile Include="Models\PageInfo.cs" />
+    <Compile Include="Models\PagingHelpers.cs" />
     <Compile Include="Models\SiteMapReader.cs" />
     <Compile Include="Models\URLInfo.cs" />
     <Compile Include="Models\URLInfoViewModel.cs" />
@@ -188,6 +190,7 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\View.cshtml" />
+    <Content Include="Views\Home\History.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Diagnostics\" />

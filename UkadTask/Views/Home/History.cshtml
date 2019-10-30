@@ -1,0 +1,23 @@
+﻿@model UkadTask.Models.HistoryViewModel
+@using UkadTask.Models
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<table class="table">
+    <tr>
+        <td>URL</td>
+        <td>Time</td>
+    </tr>
+    @foreach (var item in Model.URLInfos)
+    {
+        <tr>
+            <td>@item.Url</td>
+            <td>@item.ElapsedTime</td>
+        </tr>
+    }
+</table>
+<br />
+<div class="btn-group">
+    @Html.PageLinks(Model.PageInfo, x => Url.Action("History", "Home", new { page = x }))
+</div>

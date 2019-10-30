@@ -17,24 +17,25 @@ namespace UkadTask.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
-
             return View();
         }
 
-        //public void Test()
-        //{
-        //    DBtest db = new DBtest();
-        //    db.Connect();
-        //    db.AddTable();
-        //    //var a = ConfigurationManager.ConnectionStrings["DBconnection"].ConnectionString;
-        //}
+        public ActionResult History(int page = 1)
+        {
+            DBService dbs = new DBService();
+            var list = dbs.GetAllURLInfos("abcdef");
+            int pageSize = 100; // количество объектов на страницу
+            IEnumerable<URLInfo> URLsPerPage = list.Skip((page - 1) * pageSize).Take(pageSize);
+            PageInfo pageInfo = new PageInfo { PageNumber = page, PageSize = pageSize, TotalItems = list.Count };
+            HistoryViewModel ivm = new HistoryViewModel() { PageInfo = pageInfo, URLInfos = URLsPerPage };
+            return View(ivm);
+        }
     }
 }
+
+//TODO: move Diagnostics to Home
