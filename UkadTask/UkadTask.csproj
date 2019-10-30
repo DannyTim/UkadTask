@@ -191,6 +191,7 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\View.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
+    <Content Include="Views\Home\SpeedTest.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Diagnostics\" />
