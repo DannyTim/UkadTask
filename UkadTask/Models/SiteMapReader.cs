@@ -25,15 +25,9 @@ namespace UkadTask.Models
             _urlInfoList = new List<URLInfo>();
 
             _stopwatch = new Stopwatch();
-
-            Task.Factory.StartNew(() =>
-            {
-                GetUrlsFromSiteMap();
-            }).GetAwaiter().GetResult();
-            _urlList = _urlList.Distinct().ToList();
         }
 
-        private void GetUrlsFromSiteMap(string _url = null)
+        public void GetUrlsFromSiteMap(string _url = null)
         {
             URLInfo urlInfo = new URLInfo();
 
@@ -48,10 +42,7 @@ namespace UkadTask.Models
             }
             else
             {
-                if (_url.EndsWith("sitemap.xml"))
-                    sitemapUrl = _url;
-                else
-                    return;
+                sitemapUrl = _url;
             }
             try
             {

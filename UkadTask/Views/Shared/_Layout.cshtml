@@ -16,13 +16,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Speed Test", "SpeedTest", "Home", new { area = "" }, new { @class = "navbar-brand" }) @*name action controller*@
+                @Html.ActionLink("Speed Test", "SpeedTest", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "SpeedTest", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("History", "History", "Home")</li>
                 </ul>
             </div>
@@ -41,5 +39,3 @@
     @RenderSection("scripts", required: false)
 </body>
 </html>
-
-@*TODO: delete all references to Index, cause 404 error*@

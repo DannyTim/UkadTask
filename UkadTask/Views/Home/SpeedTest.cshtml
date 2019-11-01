@@ -1,15 +1,16 @@
 ﻿@model UkadTask.Models.URLInfoViewModel
 
 @{
-    //Layout = null;
     ViewBag.Title = "Speed Test";
 }
 
-@using (Html.BeginForm("Get", "Diagnostics", FormMethod.Get))
+@using (Html.BeginForm("SpeedTest", "Home", FormMethod.Get))
 {
     <br>
+    <h4>Enter URL to run test:</h4>
     @Html.TextBoxFor(x => x.SourceUrl)
     <input type="submit" value="Submit">
+    <p>Example of URL: www.abcdef.com.ua</p>
 }
 
 <div id="chartContainer" style="height: 370px; width: 100%;"></div>
@@ -17,9 +18,15 @@
 
 @if (Model?.URLInfo != null)
 {
-    <h2>URLs</h2>
     <table>
-        @foreach (var a in Model.URLInfo)
+        <tr>
+            <td>URL</td>
+            <td>Time</td>
+        </tr>
+        @{var sortedList = from r in Model.URLInfo
+              orderby r.ElapsedTime descending
+              select r;}
+        @foreach (var a in sortedList)
         {
             <tr>
                 <td>@a.Url</td>
@@ -36,7 +43,7 @@
             animationEnabled: true,
             theme: "light2",
             title:{
-                text: "Test of Speed"
+                text: "Speed Test Diagram"
             },
             axisY:{
                 includeZero: false
