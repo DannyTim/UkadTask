@@ -187,6 +187,7 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\History.cshtml" />
     <Content Include="Views\Home\SpeedTest.cshtml" />
+    <Content Include="Views\Shared\SiteMapNotFoundError.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

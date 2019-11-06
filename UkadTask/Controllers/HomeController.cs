@@ -32,7 +32,11 @@ namespace UkadTask.Controllers
             SiteMapReader smr = new SiteMapReader(sourceUrl);
             smr.GetUrlsFromSiteMap();
             List<URLInfo> result = smr.MeasureResponseTime();
+            if (result.Capacity == 0)
+                return View("~/Views/Shared/SiteMapNotFoundError.cshtml");
+
             dbs.AddURLInfos(result);
+
             return View(new URLInfoViewModel { URLInfo = result, SourceUrl = sourceUrl });
         }
 
