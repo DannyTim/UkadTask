@@ -6,6 +6,7 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using System.Xml.Linq;
+using HtmlAgilityPack;
 
 namespace UkadTask.Models
 {
@@ -74,10 +75,10 @@ namespace UkadTask.Models
                         foreach (var sitemap in sitemaps)
                         {
                             string current = sitemap;
-                            var task =  Task.Run(() =>
-                            {
-                                GetUrlsFromSiteMap(current);
-                            });
+                            var task = Task.Run(() =>
+                           {
+                               GetUrlsFromSiteMap(current);
+                           });
                             tasks.Add(task);
                         }
 
@@ -92,6 +93,53 @@ namespace UkadTask.Models
                     urlInfo.ElapsedTime = 0;
                     urlInfo.Url = sitemapUrl;
                 }
+            }
+        }
+
+        public void GetUrlsFromHTML()
+        {
+            URLInfo urlInfo = new URLInfo();
+
+            try
+            {
+                HtmlWeb hw = new HtmlWeb();
+                _stopwatch.Reset();
+                _stopwatch.Start();
+                HtmlDocument doc = hw.Load(_inputUri.ToString());
+                _stopwatch.Stop();
+                urlInfo.ElapsedTime = _stopwatch.ElapsedMilliseconds;
+                urlInfo.Url = _inputUri.AbsoluteUri;
+                _urlInfoList.Add(urlInfo);
+
+                List<HtmlNode> nodesLinks = doc.DocumentNode.SelectNodes("//a[@href]")?.ToList();
+
+                if (nodesLinks == null)
+                {
+                    return;
+                }
+                foreach (HtmlNode nodeLink in nodesLinks)
+                {
+                    string link = nodeLink.Attributes["href"].Value;
+
+                    if (!Uri.IsWellFormedUriString(link, UriKind.Absolute))
+                    {
+                        UriBuilder builder = new UriBuilder();
+                        builder.Scheme = _inputUri.Scheme;
+                        builder.Host = _inputUri.Host;
+                        builder.Path = link;
+                        link = builder.Uri.AbsoluteUri;
+                    }
+                    if (Uri.IsWellFormedUriString(link, UriKind.Absolute))
+                    {
+                        _urlList.Add(link);
+                    }
+                }
+            }
+            catch (WebException e)
+            {
+                urlInfo.ElapsedTime = 0;
+                urlInfo.Url = _inputUri.AbsoluteUri;
+                _urlInfoList.Add(urlInfo);
             }
         }
 

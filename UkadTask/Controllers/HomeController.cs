@@ -33,7 +33,12 @@ namespace UkadTask.Controllers
             smr.GetUrlsFromSiteMap();
             List<URLInfo> result = smr.MeasureResponseTime();
             if (result.Capacity == 0)
-                return View("~/Views/Shared/SiteMapNotFoundError.cshtml");
+            {
+                smr.GetUrlsFromHTML();
+                result = smr.MeasureResponseTime();
+            }
+
+            //return View("~/Views/Shared/SiteMapNotFoundError.cshtml");
 
             dbs.AddURLInfos(result);
 
